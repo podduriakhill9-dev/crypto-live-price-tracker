@@ -8,15 +8,19 @@ function App() {
 
   const fetchPrices = async () => {
     try {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd"
-      );
+      const response = await fetch("http://localhost:5000/prices");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch");
+      }
 
       const data = await response.json();
 
       setPrices(data);
+      setError("");
       setLoading(false);
     } catch (err) {
+      console.error(err);
       setError("Failed to fetch data");
       setLoading(false);
     }
@@ -44,17 +48,17 @@ function App() {
         <div className="cards">
           <div className="card">
             <h2>Bitcoin</h2>
-            <p>${prices.bitcoin.usd}</p>
+            <p>${prices.bitcoin?.usd}</p>
           </div>
 
           <div className="card">
             <h2>Ethereum</h2>
-            <p>${prices.ethereum.usd}</p>
+            <p>${prices.ethereum?.usd}</p>
           </div>
 
           <div className="card">
             <h2>Solana</h2>
-            <p>${prices.solana.usd}</p>
+            <p>${prices.solana?.usd}</p>
           </div>
         </div>
       )}
