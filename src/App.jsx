@@ -8,7 +8,14 @@ function App() {
 
   const fetchPrices = async () => {
     try {
-      const response = await fetch("http://localhost:5000/prices");
+      const response = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd",
+        {
+          headers: {
+            "x-cg-demo-api-key": "CG-6xbSAE6iWEjc3q2EPyzoLqgQ",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch");
