@@ -4,54 +4,29 @@ import "./App.css";
 function App() {
   const [prices, setPrices] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  const fetchPrices = async () => {
-    try {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd",
-        {
-          headers: {
-            "x-cg-demo-api-key": "CG-6xbSAE6iWEjc3q2EPyzoLqgQ",
-          },
-        }
-      );
+  const fetchPrices = () => {
+    const data = {
+      bitcoin: { usd: 105000 },
+      ethereum: { usd: 2500 },
+      solana: { usd: 150 },
+    };
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch");
-      }
-
-      const data = await response.json();
-
-      setPrices(data);
-      setError("");
-      setLoading(false);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch data");
-      setLoading(false);
-    }
+    setPrices(data);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchPrices();
-
-    const interval = setInterval(() => {
-      fetchPrices();
-    }, 10000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="container">
       <h1>Crypto Live Price Tracker</h1>
 
-      {loading && <h2>Loading...</h2>}
-
-      {error && <h2>{error}</h2>}
-
-      {!loading && !error && (
+      {loading ? (
+        <h2>Loading...</h2>
+      ) : (
         <div className="cards">
           <div className="card">
             <h2>Bitcoin</h2>
